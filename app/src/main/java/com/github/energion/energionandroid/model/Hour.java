@@ -1,14 +1,14 @@
 package com.github.energion.energionandroid.model;
 
 public class Hour {
-  String hour;
+  int hour;
   float price;
 
-  public String getHour() {
+  public int getHour() {
     return hour;
   }
 
-  public void setHour(String hour) {
+  public void setHour(int hour) {
     this.hour = hour;
   }
 
