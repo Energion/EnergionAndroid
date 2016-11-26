@@ -28,15 +28,6 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ManualFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ManualFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ManualFragment extends Fragment implements DataObserver{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
