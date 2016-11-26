@@ -40,7 +40,7 @@
                 android:id="@+id/chart"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="55dp"
-                android:layout_height="280dp"/>
+                android:layout_height="330dp"/>
         </LinearLayout>
 
 </FrameLayout>

@@ -17,19 +17,29 @@ import com.github.energion.energionandroid.R;
 import com.github.energion.energionandroid.model.Day;
 import com.github.energion.energionandroid.model.Hour;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class ManualFragment extends Fragment implements DataObserver{
+public class ManualFragment extends Fragment implements DataObserver {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -42,6 +52,7 @@ public class ManualFragment extends Fragment implements DataObserver{
     private List<Day> daysList = new ArrayList<>();
     private BarChart barChart;
     private BarData barData;
+    private ConcurrentHashMap<Float, Integer> hoursDependencies = new ConcurrentHashMap<>();
 
     private OnFragmentInteractionListener mListener;
     private OnChartValueSelectedListener chartSelectionListener;
@@ -70,7 +81,7 @@ public class ManualFragment extends Fragment implements DataObserver{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        chartSelectionListener = new OnChartValueSelectedListener(){
+        chartSelectionListener = new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
 //                priceText.setText(String.valueOf(((Hour)e.getData()).getPrice()));
@@ -91,53 +102,8 @@ public class ManualFragment extends Fragment implements DataObserver{
         View view = inflater.inflate(R.layout.fragment_manual, container, false);
 
         priceText = (TextView) view.findViewById(R.id.selected_price);
-        List<BarEntry> entries = new ArrayList<>();
-        float start = 1f;
-        for (Day day : daysList) {
-//            Day day = daysList.get(1);
-            for (Hour hour : day.getHours()) {
-                entries.add(new BarEntry(start, hour.getPrice(), hour));
-                start++;
-            }
-        }
-//        for (int i = 1; i < 50; i++) {
-//
-//            entries.add(new BarEntry(i, i));
-//        }
-
-        BarDataSet barDataSet = new BarDataSet(entries, "BarDataSet");
-        int[] colors = new int[barDataSet.getEntryCount()];
-        for (int i = 0; i < colors.length; i++){
-            float selectedPrice = barDataSet.getEntryForIndex(i).getY() - getMinimumPrice();
-            float priceRange = (getMaximumPrice() - getMinimumPrice()) / 3;
-            if (selectedPrice < priceRange) {
-                colors[i] = Color.parseColor("#F44242");
-            } else if (selectedPrice > (priceRange * 2)) {
-                colors[i] = Color.parseColor("#45F442");
-            } else {
-                colors[i] = Color.parseColor("#F4DC42");
-            }
-        }
-        barDataSet.setColors(colors);
-
-        barData = new BarData(barDataSet);
         barChart = (BarChart) view.findViewById(R.id.chart);
-        barChart.setData(barData);
-        barChart.setVisibleXRangeMinimum(0f);
-        barChart.setVisibleYRangeMinimum(0f, YAxis.AxisDependency.RIGHT);
-        barChart.getAxisLeft().setDrawGridLines(false);
-        barChart.getAxisRight().setDrawGridLines(false);
-        XAxis xaxis = barChart.getXAxis();
-        xaxis.setDrawGridLines(false);
-        xaxis.setDrawAxisLine(false);
-        xaxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        barChart.getAxisLeft().setDrawAxisLine(false);
-        barChart.getAxisRight().setDrawAxisLine(false);
-        barChart.getAxisRight().setDrawLabels(false);
-        barChart.setOnChartValueSelectedListener(chartSelectionListener);
-        barChart.getLegend().setEnabled(false);
-        barChart.invalidate();
-
+        refreshDates();
         return view;
     }
 
@@ -197,21 +163,32 @@ public class ManualFragment extends Fragment implements DataObserver{
 
     private void refreshDates() {
         List<BarEntry> entries = new ArrayList<>();
-        float start = 1f;
+        float start = 0f;
+        List<String> xLabels = new ArrayList<>();
         for (Day day : daysList) {
-//            Day day = daysList.get(1);
             for (Hour hour : day.getHours()) {
                 entries.add(new BarEntry(start, hour.getPrice(), hour));
-                Log.d("Entries: ", "Selected price: " + hour.getPrice() + ", XValue: " + start);
+                xLabels.add(String.valueOf(hour.getHour()));
+                hoursDependencies.put(start, hour.getHour());
                 start++;
             }
         }
+        String[] labels = new String[xLabels.size()];
+        for (int i = 0; i < xLabels.size(); i++) {
+            labels[i] = xLabels.get(i);
+        }
         BarDataSet barDataSet = new BarDataSet(entries, "BarDataSet");
         int[] colors = new int[barDataSet.getEntryCount()];
-        for (int i = 0; i < colors.length; i++){
+        for (int i = 0; i < colors.length; i++) {
             float selectedPrice = barDataSet.getEntryForIndex(i).getY() - getMinimumPrice();
             float priceRange = (getMaximumPrice() - getMinimumPrice()) / 3;
-            if (selectedPrice < priceRange) {
+            float timeFloat = barDataSet.getEntryForIndex(i).getX();
+            int hour = hoursDependencies.get(timeFloat);
+            Calendar cal = Calendar.getInstance();
+            int currentHour = cal.get(Calendar.HOUR_OF_DAY);
+            if (timeFloat < 24f && hour < currentHour) {
+                colors[i] = Color.parseColor("#939393");
+            } else if (selectedPrice < priceRange) {
                 colors[i] = Color.parseColor("#45F442");
             } else if (selectedPrice > (priceRange * 2)) {
                 colors[i] = Color.parseColor("#F44242");
@@ -221,19 +198,42 @@ public class ManualFragment extends Fragment implements DataObserver{
         }
         barDataSet.setColors(colors);
         barDataSet.setDrawValues(false);
+        barDataSet.setStackLabels(labels);
         barData = new BarData(barDataSet);
-        barChart.getDescription().setEnabled(false);
         barChart.setData(barData);
+        barChart.getDescription().setEnabled(false);
+        barChart.setVisibleXRangeMinimum(0f);
+        barChart.setVisibleYRangeMinimum(0f, YAxis.AxisDependency.RIGHT);
+        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.getAxisRight().setDrawGridLines(false);
+        XAxis xaxis = barChart.getXAxis();
+        IAxisValueFormatter xAxisFormatter = new HourAxisValueFormatter();
+        xaxis.setValueFormatter(xAxisFormatter);
+        xaxis.setDrawGridLines(false);
+        xaxis.setDrawAxisLine(false);
+        xaxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        barChart.getAxisLeft().setDrawAxisLine(false);
+        barChart.getAxisRight().setDrawAxisLine(false);
+        barChart.getAxisRight().setDrawLabels(false);
+        barChart.setOnChartValueSelectedListener(chartSelectionListener);
+        barChart.getLegend().setEnabled(false);
         barChart.invalidate();
     }
 
-    private void setObservable(DataObservable observable){
+    public class HourAxisValueFormatter implements IAxisValueFormatter {
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
+            return hoursDependencies.get(value).toString();
+        }
+    }
+
+    private void setObservable(DataObservable observable) {
         this.observable = observable;
     }
 
     @Override
     public void onDestroy() {
-        if(observable != null) {
+        if (observable != null) {
             observable.unsubscribe(this);
         }
 
