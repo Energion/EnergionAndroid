@@ -1,5 +1,6 @@
 package com.github.energion.energionandroid;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -94,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements ManualFragment.On
     int id = item.getItemId();
 
     if (id == R.id.action_settings) {
+      Intent intent = new Intent(this, SettingsActivity.class);
+      this.startActivity(intent);
       return true;
     }
 
