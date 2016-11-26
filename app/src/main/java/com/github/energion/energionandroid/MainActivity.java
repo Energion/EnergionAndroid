@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.github.energion.energionandroid.manual.ManualFragment;
 import com.github.energion.energionandroid.model.Day;
+import com.github.energion.energionandroid.utils.CustomViewPager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements ManualFragment.On
 
     pagerAdapter = new SectionsPagerAdapter(this, this, getSupportFragmentManager());
 
-    pager = (ViewPager) findViewById(R.id.container);
+    pager = (CustomViewPager) findViewById(R.id.container);
     pager.setAdapter(pagerAdapter);
 
     TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);

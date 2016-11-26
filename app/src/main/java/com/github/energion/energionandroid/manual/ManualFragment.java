@@ -18,6 +18,7 @@ import com.github.energion.energionandroid.model.Day;
 import com.github.energion.energionandroid.model.Hour;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -187,7 +188,7 @@ public class ManualFragment extends Fragment implements DataObserver {
             Calendar cal = Calendar.getInstance();
             int currentHour = cal.get(Calendar.HOUR_OF_DAY);
             if (timeFloat < 24f && hour < currentHour) {
-                colors[i] = Color.parseColor("#939393");
+                colors[i] = Color.parseColor("#CCCCCC");
             } else if (selectedPrice < priceRange) {
                 colors[i] = Color.parseColor("#45F442");
             } else if (selectedPrice > (priceRange * 2)) {
@@ -212,18 +213,26 @@ public class ManualFragment extends Fragment implements DataObserver {
         xaxis.setDrawGridLines(false);
         xaxis.setDrawAxisLine(false);
         xaxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        LimitLine limitLine = new LimitLine(23.5f);
+        limitLine.setLineColor(Color.parseColor("#939393"));
+        xaxis.addLimitLine(limitLine);
         barChart.getAxisLeft().setDrawAxisLine(false);
         barChart.getAxisRight().setDrawAxisLine(false);
         barChart.getAxisRight().setDrawLabels(false);
         barChart.setOnChartValueSelectedListener(chartSelectionListener);
         barChart.getLegend().setEnabled(false);
+        barChart.setKeepScreenOn(true);
         barChart.invalidate();
     }
 
     public class HourAxisValueFormatter implements IAxisValueFormatter {
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
-            return hoursDependencies.get(value).toString();
+            if (hoursDependencies.get(value) != null) {
+                return hoursDependencies.get(value).toString();
+            } else {
+                return "";
+            }
         }
     }
 
