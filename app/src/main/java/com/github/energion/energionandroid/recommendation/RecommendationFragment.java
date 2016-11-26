@@ -10,12 +10,12 @@ import android.view.ViewGroup;
 import com.github.energion.energionandroid.R;
 
 public class RecommendationFragment extends Fragment {
-
-
   public RecommendationFragment() {
-    // Required empty public constructor
   }
 
+  public static RecommendationFragment newInstance(){
+    return new RecommendationFragment();
+  }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
