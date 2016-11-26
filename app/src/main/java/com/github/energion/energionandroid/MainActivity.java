@@ -3,9 +3,6 @@ package com.github.energion.energionandroid;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.github.energion.energionandroid.manual.ManualFragment;
-import com.github.energion.energionandroid.recommendation.RecommendationFragment;
 
 public class MainActivity extends AppCompatActivity implements ManualFragment.OnFragmentInteractionListener{
   private SectionsPagerAdapter pagerAdapter;
@@ -28,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements ManualFragment.On
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    pagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+    pagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
 
     pager = (ViewPager) findViewById(R.id.container);
     pager.setAdapter(pagerAdapter);
@@ -56,43 +52,5 @@ public class MainActivity extends AppCompatActivity implements ManualFragment.On
 
   @Override
   public void onFragmentInteraction(Uri uri) {
-
-  }
-
-  public class SectionsPagerAdapter extends FragmentPagerAdapter {
-    public SectionsPagerAdapter(FragmentManager fm) {
-      super(fm);
-    }
-
-    @Override
-    public Fragment getItem(int position) {
-      switch (position) {
-        case 0:
-          return RecommendationFragment.newInstance();
-
-        case 1:
-          return ManualFragment.newInstance("", "");
-
-        default:
-          return RecommendationFragment.newInstance();
-      }
-    }
-
-    @Override
-    public int getCount() {
-      return 2;
-    }
-
-    @Override
-    public CharSequence getPageTitle(int position) {
-      switch (position) {
-        case 0:
-          return getString(R.string.recommendation_title);
-        case 1:
-          return getString(R.string.manual_title);
-      }
-
-      return "";
-    }
   }
 }
