@@ -2,7 +2,7 @@ package com.github.energion.energionandroid.model;
 
 public class Hour {
   String hour;
-  String price;
+  float price;
 
   public String getHour() {
     return hour;
@@ -12,11 +12,11 @@ public class Hour {
     this.hour = hour;
   }
 
-  public String getPrice() {
+  public float getPrice() {
     return price;
   }
 
-  public void setPrice(String price) {
+  public void setPrice(float price) {
     this.price = price;
   }
 }
