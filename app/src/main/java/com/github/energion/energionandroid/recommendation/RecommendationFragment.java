@@ -3,12 +3,13 @@ package com.github.energion.energionandroid.recommendation;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.github.energion.energionandroid.CirclesView;
 import com.github.energion.energionandroid.DataObservable;
 import com.github.energion.energionandroid.DataObserver;
 import com.github.energion.energionandroid.R;
@@ -19,6 +20,7 @@ import java.util.List;
 public class RecommendationFragment extends Fragment implements DataObserver {
   private ProgressBar progressBar;
   private DataObservable observable;
+  private LinearLayout rootContainer;
 
   public static RecommendationFragment newInstance(DataObservable observable) {
     RecommendationFragment fragment = new RecommendationFragment();
@@ -35,6 +37,7 @@ public class RecommendationFragment extends Fragment implements DataObserver {
     View view = inflater.inflate(R.layout.fragment_recommendation, container, false);
 
     progressBar = (ProgressBar) view.findViewById(R.id.recommendation_progress);
+    rootContainer = (LinearLayout) view.findViewById(R.id.recommendation_container);
 
     return view;
   }
@@ -56,10 +59,10 @@ public class RecommendationFragment extends Fragment implements DataObserver {
         && bestEvening.size() == dayList.size()) {
 
       for (int i = 0; i < bestNight.size(); i++) {
-        Log.d("TAG", "=========== best Night of " + dayList.get(i).getDate() + " is " + bestNight.get(i));
-        Log.d("TAG", "=========== best Morning of " + dayList.get(i).getDate() + " is " + bestMorning.get(i));
-        Log.d("TAG", "=========== best Day of " + dayList.get(i).getDate() + " is " + bestDay.get(i));
-        Log.d("TAG", "=========== best Evening of " + dayList.get(i).getDate() + " is " + bestEvening.get(i));
+        rootContainer.addView(new CirclesView(getActivity(), "00:00", String.valueOf(bestNight.get(i)) + "€"));
+        rootContainer.addView(new CirclesView(getActivity(), "06:00", String.valueOf(bestMorning.get(i)) + "€"));
+        rootContainer.addView(new CirclesView(getActivity(), "12:00", String.valueOf(bestDay.get(i)) + "€"));
+        rootContainer.addView(new CirclesView(getActivity(), "18:00", String.valueOf(bestEvening.get(i)) + "€"));
       }
     }
 
