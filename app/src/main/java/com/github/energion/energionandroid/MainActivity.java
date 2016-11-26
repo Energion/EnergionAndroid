@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements ManualFragment.On
 
   private List<Day> getDaysFromServer() {
     Gson gson = new GsonBuilder()
-        .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+        .setDateFormat("dd-MM-yyyy")
         .create();
 
     Retrofit retrofit = new Retrofit.Builder()

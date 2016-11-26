@@ -1,16 +1,17 @@
 package com.github.energion.energionandroid.model;
 
+import java.util.Date;
 import java.util.List;
 
 public class Day {
-  String date;
+  Date date;
   List<Hour> hours;
 
-  public String getDate() {
+  public Date getDate() {
     return date;
   }
 
-  public void setDate(String date) {
+  public void setDate(Date date) {
     this.date = date;
   }
 
