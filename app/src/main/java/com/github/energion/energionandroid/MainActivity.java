@@ -1,5 +1,6 @@
 package com.github.energion.energionandroid;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,7 +18,7 @@ import android.view.View;
 import com.github.energion.energionandroid.manual.ManualFragment;
 import com.github.energion.energionandroid.recommendation.RecommendationFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ManualFragment.OnFragmentInteractionListener{
   private SectionsPagerAdapter pagerAdapter;
 
   private ViewPager pager;
@@ -63,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     return super.onOptionsItemSelected(item);
+  }
+
+  @Override
+  public void onFragmentInteraction(Uri uri) {
+
   }
 
   public class SectionsPagerAdapter extends FragmentPagerAdapter {
