@@ -17,6 +17,7 @@ import com.github.energion.energionandroid.R;
 import com.github.energion.energionandroid.model.Day;
 import com.github.energion.energionandroid.model.Hour;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -81,17 +82,6 @@ public class ManualFragment extends Fragment implements DataObserver{
 
             }
         };
-//        daysList.add(new Day());
-//        daysList.get(0).setDate(new Date().toString());
-//        List<Hour> hours = new ArrayList<>();
-//        for (int i = 0; i < 35; i++) {
-//            Hour h = new Hour();
-//            h.setHour(String.valueOf(i));
-//            h.setPrice((float)i);
-//            hours.add(h);
-//        }
-//        daysList.get(0).setHours(hours);
-
     }
 
     @Override
@@ -104,22 +94,22 @@ public class ManualFragment extends Fragment implements DataObserver{
         List<BarEntry> entries = new ArrayList<>();
         float start = 1f;
         for (Day day : daysList) {
+//            Day day = daysList.get(1);
             for (Hour hour : day.getHours()) {
-//                entries.add(new BarEntry(hour.getPrice(), start, hour));
+                entries.add(new BarEntry(start, hour.getPrice(), hour));
                 start++;
             }
         }
-        for (int i = 1; i < 50; i++) {
-
-            entries.add(new BarEntry(i, i));
-        }
+//        for (int i = 1; i < 50; i++) {
+//
+//            entries.add(new BarEntry(i, i));
+//        }
 
         BarDataSet barDataSet = new BarDataSet(entries, "BarDataSet");
         int[] colors = new int[barDataSet.getEntryCount()];
         for (int i = 0; i < colors.length; i++){
             float selectedPrice = barDataSet.getEntryForIndex(i).getY() - getMinimumPrice();
             float priceRange = (getMaximumPrice() - getMinimumPrice()) / 3;
-            Log.d("FragmentColors: ", "Selected price: " + selectedPrice + ", priceRange: " + priceRange);
             if (selectedPrice < priceRange) {
                 colors[i] = Color.parseColor("#F44242");
             } else if (selectedPrice > (priceRange * 2)) {
@@ -132,17 +122,20 @@ public class ManualFragment extends Fragment implements DataObserver{
 
         barData = new BarData(barDataSet);
         barChart = (BarChart) view.findViewById(R.id.chart);
-        barChart.setFitBars(true);
         barChart.setData(barData);
         barChart.setVisibleXRangeMinimum(0f);
         barChart.setVisibleYRangeMinimum(0f, YAxis.AxisDependency.RIGHT);
         barChart.getAxisLeft().setDrawGridLines(false);
         barChart.getAxisRight().setDrawGridLines(false);
-        barChart.getXAxis().setDrawGridLines(false);
-        barChart.getXAxis().setDrawAxisLine(false);
+        XAxis xaxis = barChart.getXAxis();
+        xaxis.setDrawGridLines(false);
+        xaxis.setDrawAxisLine(false);
+        xaxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         barChart.getAxisLeft().setDrawAxisLine(false);
         barChart.getAxisRight().setDrawAxisLine(false);
+        barChart.getAxisRight().setDrawLabels(false);
         barChart.setOnChartValueSelectedListener(chartSelectionListener);
+        barChart.getLegend().setEnabled(false);
         barChart.invalidate();
 
         return view;
@@ -198,7 +191,40 @@ public class ManualFragment extends Fragment implements DataObserver{
 
     @Override
     public void update(List<Day> dayList) {
+        this.daysList = dayList;
+        refreshDates();
+    }
 
+    private void refreshDates() {
+        List<BarEntry> entries = new ArrayList<>();
+        float start = 1f;
+        for (Day day : daysList) {
+//            Day day = daysList.get(1);
+            for (Hour hour : day.getHours()) {
+                entries.add(new BarEntry(start, hour.getPrice(), hour));
+                Log.d("Entries: ", "Selected price: " + hour.getPrice() + ", XValue: " + start);
+                start++;
+            }
+        }
+        BarDataSet barDataSet = new BarDataSet(entries, "BarDataSet");
+        int[] colors = new int[barDataSet.getEntryCount()];
+        for (int i = 0; i < colors.length; i++){
+            float selectedPrice = barDataSet.getEntryForIndex(i).getY() - getMinimumPrice();
+            float priceRange = (getMaximumPrice() - getMinimumPrice()) / 3;
+            if (selectedPrice < priceRange) {
+                colors[i] = Color.parseColor("#45F442");
+            } else if (selectedPrice > (priceRange * 2)) {
+                colors[i] = Color.parseColor("#F44242");
+            } else {
+                colors[i] = Color.parseColor("#F4DC42");
+            }
+        }
+        barDataSet.setColors(colors);
+        barDataSet.setDrawValues(false);
+        barData = new BarData(barDataSet);
+        barChart.getDescription().setEnabled(false);
+        barChart.setData(barData);
+        barChart.invalidate();
     }
 
     private void setObservable(DataObservable observable){
