@@ -59,7 +59,9 @@ public class RecommendationFragment extends Fragment implements DataObserver {
 
   @Override
   public void onDestroy() {
-    observable.unsubscribe(this);
+    if(observable != null) {
+      observable.unsubscribe(this);
+    }
 
     super.onDestroy();
   }
