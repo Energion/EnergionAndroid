@@ -5,6 +5,7 @@
     <string name="section_format">Hello World from section: %1$d</string>
 
     <string name="selected_price_label">Selected price</string>
+    <string name="selected_price_currency">EUR/MW</string>
 
     <string name="recommendation_title">Recommendations</string>
     <string name="manual_title">Select suitable time</string>
