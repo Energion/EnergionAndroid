@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.github.energion.energionandroid.DataObservable;
 import com.github.energion.energionandroid.DataObserver;
 import com.github.energion.energionandroid.R;
 import com.github.energion.energionandroid.model.Day;
@@ -17,10 +18,16 @@ import com.github.energion.energionandroid.model.Hour;
 import java.util.List;
 
 public class RecommendationFragment extends Fragment implements DataObserver {
-  ProgressBar progressBar;
+  private ProgressBar progressBar;
+  private DataObservable observable;
 
-  public static RecommendationFragment newInstance(){
-    return new RecommendationFragment();
+  public static RecommendationFragment newInstance(DataObservable observable){
+    RecommendationFragment fragment = new RecommendationFragment();
+    fragment.setObservable(observable);
+
+    observable.subscribe(fragment);
+
+    return fragment;
   }
 
   @Override
@@ -44,5 +51,16 @@ public class RecommendationFragment extends Fragment implements DataObserver {
         Log.d("apiResponse", "hour: " + hour.getHour() + " and price is " + hour.getPrice());
       }
     }
+  }
+
+  private void setObservable(DataObservable observable){
+    this.observable = observable;
+  }
+
+  @Override
+  public void onDestroy() {
+    observable.unsubscribe(this);
+
+    super.onDestroy();
   }
 }

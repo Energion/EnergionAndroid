@@ -20,19 +20,15 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
   @Override
   public Fragment getItem(int position) {
-    RecommendationFragment fragment;
-
     switch (position) {
       case 0:
-        fragment = RecommendationFragment.newInstance();
-        observable.subscribe(fragment);
-        return fragment;
+        return RecommendationFragment.newInstance(observable);
 
       case 1:
-        return ManualFragment.newInstance("", "");
+        return ManualFragment.newInstance(observable);
 
       default:
-        return RecommendationFragment.newInstance();
+        return RecommendationFragment.newInstance(observable);
     }
   }
 
