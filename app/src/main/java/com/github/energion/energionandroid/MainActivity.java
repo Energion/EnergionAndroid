@@ -12,10 +12,10 @@ import android.view.MenuItem;
 
 import com.github.energion.energionandroid.manual.ManualFragment;
 import com.github.energion.energionandroid.model.Day;
-import com.github.energion.energionandroid.model.Hour;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -24,8 +24,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements ManualFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements ManualFragment.OnFragmentInteractionListener, DataObservable {
   private SectionsPagerAdapter pagerAdapter;
+  private List<DataObserver> observerList;
 
   private ViewPager pager;
 
@@ -37,13 +38,15 @@ public class MainActivity extends AppCompatActivity implements ManualFragment.On
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    pagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
+    pagerAdapter = new SectionsPagerAdapter(this, this, getSupportFragmentManager());
 
     pager = (ViewPager) findViewById(R.id.container);
     pager.setAdapter(pagerAdapter);
 
     TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
     tabLayout.setupWithViewPager(pager);
+
+    observerList = new ArrayList<>();
 
     getDaysFromServer();
   }
@@ -66,12 +69,8 @@ public class MainActivity extends AppCompatActivity implements ManualFragment.On
       public void onResponse(Call<List<Day>> call, Response<List<Day>> response) {
         List<Day> list = response.body();
 
-        for (Day day : list) {
-          Log.d("apiResponse", "date: " + day.getDate());
-
-          for (Hour hour : day.getHours()) {
-            Log.d("apiResponse", "hour: " + hour.getHour() + " and price is " + hour.getPrice());
-          }
+        for(DataObserver observer : observerList) {
+          observer.update(list);
         }
       }
 
@@ -102,5 +101,15 @@ public class MainActivity extends AppCompatActivity implements ManualFragment.On
 
   @Override
   public void onFragmentInteraction(Uri uri) {
+  }
+
+  @Override
+  public void subscribe(DataObserver observer) {
+    observerList.add(observer);
+  }
+
+  @Override
+  public void unsubscribe(DataObserver observer) {
+    observerList.remove(observer);
   }
 }

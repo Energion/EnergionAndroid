@@ -9,18 +9,24 @@ import com.github.energion.energionandroid.manual.ManualFragment;
 import com.github.energion.energionandroid.recommendation.RecommendationFragment;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
-  Context context;
+  private Context context;
+  private DataObservable observable;
 
-  public SectionsPagerAdapter(Context context, FragmentManager fm) {
+  public SectionsPagerAdapter(Context context, DataObservable observable, FragmentManager fm) {
     super(fm);
     this.context = context;
+    this.observable = observable;
   }
 
   @Override
   public Fragment getItem(int position) {
+    RecommendationFragment fragment;
+
     switch (position) {
       case 0:
-        return RecommendationFragment.newInstance();
+        fragment = RecommendationFragment.newInstance();
+        observable.subscribe(fragment);
+        return fragment;
 
       case 1:
         return ManualFragment.newInstance("", "");
