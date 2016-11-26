@@ -6,6 +6,7 @@
 
     <string name="selected_price_label">Selected price</string>
     <string name="selected_price_currency">EUR/MW</string>
+    <string name="bar_chart_description">Price range chart for </string>
 
     <string name="recommendation_title">Recommendations</string>
     <string name="manual_title">Select suitable time</string>
