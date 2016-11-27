@@ -1,7 +1,9 @@
 package com.github.energion.energionandroid.details;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +20,12 @@ public class DetailsActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_details);
+
+    ActionBar ab = getSupportActionBar();
+
+    if (ab != null) {
+      ab.setDisplayHomeAsUpEnabled(true);
+    }
 
     String[] cheap = getIntent().getStringExtra(CHEAP).split(",");
     String[] medium = getIntent().getStringExtra(MEDIUM).split(",");
@@ -66,17 +74,27 @@ public class DetailsActivity extends AppCompatActivity {
     });
   }
 
-  private String getHourRange(int hour){
+  private String getHourRange(int hour) {
     int endHour = hour + 1;
 
     return getCorrectHourFormat(hour) + ":00-" + getCorrectHourFormat(endHour) + ":00";
   }
 
-  private String getCorrectHourFormat(int hour){
-    if(hour < 10) {
+  private String getCorrectHourFormat(int hour) {
+    if (hour < 10) {
       return "0" + hour;
     } else {
       return hour + "";
     }
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId() == android.R.id.home) {
+
+      finish();
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 }
