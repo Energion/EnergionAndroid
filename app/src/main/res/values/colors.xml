@@ -5,4 +5,5 @@
   <color name="colorAccent">#FF4081</color>
   <color name="colorCircles">#03A9F4</color>
   <color name="colorGoodPrice">#66BB6A</color>
+  <color name="colorDisabled">#757575</color>
 </resources>

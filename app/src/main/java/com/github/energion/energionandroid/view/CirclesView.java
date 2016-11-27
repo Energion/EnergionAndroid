@@ -2,6 +2,7 @@ package com.github.energion.energionandroid.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -14,14 +15,23 @@ import com.github.energion.energionandroid.model.Day;
 import com.github.energion.energionandroid.model.Hour;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.TimeZone;
 
 public class CirclesView extends FrameLayout {
   Day day;
   int startHour;
   List<Hour> hourList;
+  private ImageView lastCircleView;
+  private ImageView firstCircleView;
+  private ImageView smallCircleView1;
+  private ImageView smallCircleView2;
+  private ImageView smallCircleView3;
+  private TextView timeView;
+  private TextView priceView;
 
   public CirclesView(Context context, String time, String price, boolean lastItem, String date) {
     super(context);
@@ -46,11 +56,15 @@ public class CirclesView extends FrameLayout {
 
     inflate(getContext(), R.layout.view_circles, this);
 
-    TextView timeView = (TextView) findViewById(R.id.view_circles_time);
-    TextView priceView = (TextView) findViewById(R.id.view_circles_price);
+    timeView = (TextView) findViewById(R.id.view_circles_time);
+    priceView = (TextView) findViewById(R.id.view_circles_price);
     TextView dateView = (TextView) findViewById(R.id.view_circles_date);
     TextView endTime = (TextView) findViewById(R.id.view_circles_end_time);
-    ImageView lastCircleView = (ImageView) findViewById(R.id.view_circles_last_circle);
+    lastCircleView = (ImageView) findViewById(R.id.view_circles_last_circle);
+    firstCircleView = (ImageView) findViewById(R.id.view_circles_circle_big);
+    smallCircleView1 = (ImageView) findViewById(R.id.view_circles_circle_small_1);
+    smallCircleView2 = (ImageView) findViewById(R.id.view_circles_circle_small_2);
+    smallCircleView3 = (ImageView) findViewById(R.id.view_circles_circle_small_3);
 
     timeView.setText(time);
     priceView.setText(price);
@@ -62,11 +76,13 @@ public class CirclesView extends FrameLayout {
     priceView.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getContext(), DetailsActivity.class);
-        intent.putExtra(DetailsActivity.CHEAP, getDataAsString(0));
-        intent.putExtra(DetailsActivity.MEDIUM, getDataAsString(1));
-        intent.putExtra(DetailsActivity.EXPENSIVE, getDataAsString(2));
-        getContext().startActivity(intent);
+        if (isAfterDate()) {
+          Intent intent = new Intent(getContext(), DetailsActivity.class);
+          intent.putExtra(DetailsActivity.CHEAP, getDataAsString(0));
+          intent.putExtra(DetailsActivity.MEDIUM, getDataAsString(1));
+          intent.putExtra(DetailsActivity.EXPENSIVE, getDataAsString(2));
+          getContext().startActivity(intent);
+        }
       }
     });
   }
@@ -91,7 +107,7 @@ public class CirclesView extends FrameLayout {
     }
   }
 
-  private String getDataAsString(int position){
+  private String getDataAsString(int position) {
     return hourList.get(position).getHour() + "," + hourList.get(position).getPrice();
   }
 
@@ -106,7 +122,30 @@ public class CirclesView extends FrameLayout {
     this.startHour = startHour;
 
     populateHoursList();
+    disablePassedViews();
 
     return this;
+  }
+
+  private void disablePassedViews() {
+    if (!isAfterDate()) {
+      firstCircleView.setImageResource(R.drawable.big_circle_disabled);
+      smallCircleView1.setImageResource(R.drawable.small_circle_disabled);
+      smallCircleView2.setImageResource(R.drawable.small_circle_disabled);
+      smallCircleView3.setImageResource(R.drawable.small_circle_disabled);
+      lastCircleView.setImageResource(R.drawable.big_circle_disabled);
+      priceView.setBackgroundResource(R.drawable.button_background_disabled);
+      priceView.setTextColor(ContextCompat.getColor(getContext(), R.color.colorDisabled));
+    }
+  }
+
+  private boolean isAfterDate() {
+    Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GTM+2"));
+    Calendar dayDate = Calendar.getInstance();
+    dayDate.setTime(day.getDate());
+    dayDate.set(Calendar.HOUR_OF_DAY, startHour + 6);
+    calendar.add(Calendar.HOUR_OF_DAY, 2);
+
+    return dayDate.after(calendar);
   }
 }
