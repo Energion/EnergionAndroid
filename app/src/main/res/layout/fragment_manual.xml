@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|top"
             android:layout_margin="28dp"
-            android:src="@drawable/ic_access_alarm_black_24dp"
+            android:src="@drawable/alarm_button_custom"
             android:background="@null"
             android:visibility="invisible"/>
         </FrameLayout>
