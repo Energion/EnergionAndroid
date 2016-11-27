@@ -1,9 +1,14 @@
 package com.github.energion.energionandroid.manual;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +18,8 @@ import android.widget.TextView;
 
 import com.github.energion.energionandroid.DataObservable;
 import com.github.energion.energionandroid.DataObserver;
+import com.github.energion.energionandroid.NotificationPublisher;
+import com.github.energion.energionandroid.Notifications;
 import com.github.energion.energionandroid.R;
 import com.github.energion.energionandroid.model.Day;
 import com.github.energion.energionandroid.model.Hour;
@@ -97,6 +104,12 @@ public class ManualFragment extends Fragment implements DataObserver {
                 priceText.setTextColor(colors[(int)e.getX()]);
                 SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
                 dateText.setText(sdf.format(((Day)e.getData()).getDate()));
+
+                Notifications notification = new Notifications(getActivity());
+
+                notification.scheduleNotification(notification.getNotification(
+                        "Energy price now is " + String.valueOf(e.getY()) + ". Use it!"
+                ), 1000);
             }
 
             @Override
