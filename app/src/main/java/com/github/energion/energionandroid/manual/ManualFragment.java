@@ -30,8 +30,11 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import org.w3c.dom.Text;
+
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,6 +61,9 @@ public class ManualFragment extends Fragment implements DataObserver {
     private OnFragmentInteractionListener mListener;
     private OnChartValueSelectedListener chartSelectionListener;
     private TextView priceText;
+    private TextView priceLabel;
+    private TextView dateText;
+    private int[] colors;
 
     private DataObservable observable;
 
@@ -86,7 +92,11 @@ public class ManualFragment extends Fragment implements DataObserver {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
 //                priceText.setText(String.valueOf(((Hour)e.getData()).getPrice()));
+                priceLabel.setText(getResources().getString(R.string.selected_price_label));
                 priceText.setText(String.valueOf(e.getY()) + " " + getResources().getString(R.string.selected_price_currency));
+                priceText.setTextColor(colors[(int)e.getX()]);
+                SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+                dateText.setText(sdf.format(((Day)e.getData()).getDate()));
             }
 
             @Override
@@ -103,6 +113,8 @@ public class ManualFragment extends Fragment implements DataObserver {
         View view = inflater.inflate(R.layout.fragment_manual, container, false);
 
         priceText = (TextView) view.findViewById(R.id.selected_price);
+        priceLabel = (TextView) view.findViewById(R.id.selected_price_label);
+        dateText = (TextView) view.findViewById(R.id.selected_date);
         barChart = (BarChart) view.findViewById(R.id.chart);
         refreshDates();
         return view;
@@ -168,7 +180,7 @@ public class ManualFragment extends Fragment implements DataObserver {
         List<String> xLabels = new ArrayList<>();
         for (Day day : daysList) {
             for (Hour hour : day.getHours()) {
-                entries.add(new BarEntry(start, hour.getPrice(), hour));
+                entries.add(new BarEntry(start, hour.getPrice(), day));
                 xLabels.add(String.valueOf(hour.getHour()));
                 hoursDependencies.put(start, hour.getHour());
                 start++;
@@ -179,22 +191,21 @@ public class ManualFragment extends Fragment implements DataObserver {
             labels[i] = xLabels.get(i);
         }
         BarDataSet barDataSet = new BarDataSet(entries, "BarDataSet");
-        int[] colors = new int[barDataSet.getEntryCount()];
+        colors = new int[barDataSet.getEntryCount()];
         for (int i = 0; i < colors.length; i++) {
             float selectedPrice = barDataSet.getEntryForIndex(i).getY() - getMinimumPrice();
             float priceRange = (getMaximumPrice() - getMinimumPrice()) / 3;
             float timeFloat = barDataSet.getEntryForIndex(i).getX();
+            Day day = (Day)barDataSet.getEntryForIndex(i).getData();
             int hour = hoursDependencies.get(timeFloat);
-            Calendar cal = Calendar.getInstance();
-            int currentHour = cal.get(Calendar.HOUR_OF_DAY);
-            if (timeFloat < 24f && hour < currentHour) {
+            if (isDateSuitable(day.getDate(), hour)) {
                 colors[i] = Color.parseColor("#CCCCCC");
             } else if (selectedPrice < priceRange) {
-                colors[i] = Color.parseColor("#45F442");
+                colors[i] = Color.parseColor("#4CAF50");
             } else if (selectedPrice > (priceRange * 2)) {
-                colors[i] = Color.parseColor("#F44242");
+                colors[i] = Color.parseColor("#F44336");
             } else {
-                colors[i] = Color.parseColor("#F4DC42");
+                colors[i] = Color.parseColor("#FFC107");
             }
         }
         barDataSet.setColors(colors);
@@ -207,6 +218,7 @@ public class ManualFragment extends Fragment implements DataObserver {
         barChart.setVisibleYRangeMinimum(0f, YAxis.AxisDependency.RIGHT);
         barChart.getAxisLeft().setDrawGridLines(false);
         barChart.getAxisRight().setDrawGridLines(false);
+        barChart.setScaleYEnabled(false);
         XAxis xaxis = barChart.getXAxis();
         IAxisValueFormatter xAxisFormatter = new HourAxisValueFormatter();
         xaxis.setValueFormatter(xAxisFormatter);
@@ -221,8 +233,35 @@ public class ManualFragment extends Fragment implements DataObserver {
         barChart.getAxisRight().setDrawLabels(false);
         barChart.setOnChartValueSelectedListener(chartSelectionListener);
         barChart.getLegend().setEnabled(false);
-        barChart.setKeepScreenOn(true);
+        barChart.zoom(2f, 1f, getCurrentDateAsFloat(), 1f);
         barChart.invalidate();
+    }
+
+    private float getCurrentDateAsFloat() {
+        float floatValue = 0f;
+        for (Day d : daysList) {
+            for (Hour h : d.getHours()) {
+                if (!isDateSuitable(d.getDate(), h.getHour())) {
+                    return floatValue;
+                } else {
+                    floatValue++;
+                }
+            }
+        }
+        return floatValue;
+    }
+
+    private boolean isDateSuitable(Date date, int hourOfDay) {
+        Calendar cal = Calendar.getInstance();
+        if (date != null) {
+            cal.setTime(date);
+        }
+        cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        cal.add(Calendar.HOUR_OF_DAY, 1);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime().before(new Date());
     }
 
     public class HourAxisValueFormatter implements IAxisValueFormatter {
