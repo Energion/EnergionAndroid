@@ -1,18 +1,26 @@
 package com.github.energion.energionandroid.manual;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.github.energion.energionandroid.DataObservable;
 import com.github.energion.energionandroid.DataObserver;
+import com.github.energion.energionandroid.NotificationPublisher;
+import com.github.energion.energionandroid.Notifications;
 import com.github.energion.energionandroid.R;
 import com.github.energion.energionandroid.model.Day;
 import com.github.energion.energionandroid.model.Hour;
@@ -63,7 +71,9 @@ public class ManualFragment extends Fragment implements DataObserver {
     private TextView priceText;
     private TextView priceLabel;
     private TextView dateText;
+    private ImageButton alarmButton;
     private int[] colors;
+    private float selectedPrice;
 
     private DataObservable observable;
 
@@ -95,8 +105,15 @@ public class ManualFragment extends Fragment implements DataObserver {
                 priceLabel.setText(getResources().getString(R.string.selected_price_label));
                 priceText.setText(String.valueOf(e.getY()) + " " + getResources().getString(R.string.selected_price_currency));
                 priceText.setTextColor(colors[(int)e.getX()]);
+                alarmButton.setVisibility(View.VISIBLE);
                 SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
                 dateText.setText(sdf.format(((Day)e.getData()).getDate()));
+                selectedPrice = e.getY();
+//                Notifications notification = new Notifications(getActivity());
+//
+//                notification.scheduleNotification(notification.getNotification(
+//                        "Energy price now is " + String.valueOf(e.getY()) + ". Use it!"
+//                ), 1000);
             }
 
             @Override
@@ -116,6 +133,18 @@ public class ManualFragment extends Fragment implements DataObserver {
         priceLabel = (TextView) view.findViewById(R.id.selected_price_label);
         dateText = (TextView) view.findViewById(R.id.selected_date);
         barChart = (BarChart) view.findViewById(R.id.chart);
+        alarmButton = (ImageButton) view.findViewById(R.id.add_alarm_button);
+        alarmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("buttonclicklog","Button was clicked!!!");
+                Notifications notification = new Notifications(getActivity());
+
+                notification.scheduleNotification(notification.getNotification(
+                        "Energy price now is " + String.valueOf(selectedPrice) + ". Use it!"
+                ), 0);
+            }
+        });
         refreshDates();
         return view;
     }
