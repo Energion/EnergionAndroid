@@ -15,6 +15,7 @@ import com.github.energion.energionandroid.DataObserver;
 import com.github.energion.energionandroid.R;
 import com.github.energion.energionandroid.model.Day;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class RecommendationFragment extends Fragment implements DataObserver {
@@ -59,12 +60,19 @@ public class RecommendationFragment extends Fragment implements DataObserver {
         && bestEvening.size() == dayList.size()) {
 
       for (int i = 0; i < bestNight.size(); i++) {
-        rootContainer.addView(new CirclesView(getActivity(), "00:00", String.valueOf(bestNight.get(i)) + "€", false));
-        rootContainer.addView(new CirclesView(getActivity(), "06:00", String.valueOf(bestMorning.get(i)) + "€", false));
-        rootContainer.addView(new CirclesView(getActivity(), "12:00", String.valueOf(bestDay.get(i)) + "€", false));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dayList.get(i).getDate());
+
+        String date = calendar.get(Calendar.DAY_OF_MONTH) + "." + calendar.get(Calendar.MONTH);
+
+        rootContainer.addView(new CirclesView(getActivity(), "00:00", String.valueOf(bestNight.get(i)) + "€", false, date));
+        rootContainer.addView(new CirclesView(getActivity(), "06:00", String.valueOf(bestMorning.get(i)) + "€", false, ""));
+        rootContainer.addView(new CirclesView(getActivity(), "12:00", String.valueOf(bestDay.get(i)) + "€", false, ""));
 
         if (i == bestNight.size() - 1) {
-          rootContainer.addView(new CirclesView(getActivity(), "18:00", String.valueOf(bestEvening.get(i)) + "€", true));
+          rootContainer.addView(new CirclesView(getActivity(), "18:00", String.valueOf(bestEvening.get(i)) + "€", true, ""));
+        } else {
+          rootContainer.addView(new CirclesView(getActivity(), "18:00", String.valueOf(bestEvening.get(i)) + "€", false, ""));
         }
       }
     }

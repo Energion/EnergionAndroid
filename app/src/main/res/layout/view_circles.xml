@@ -7,11 +7,21 @@
   android:layout_height="wrap_content"
   android:orientation="vertical">
 
+  <TextView
+    android:id="@+id/view_circles_date"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="4dp"
+    android:textSize="22sp"
+    android:textStyle="bold"
+    tools:text="27.11"/>
+
   <LinearLayout
     android:id="@+id/view_circles_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="50dp"
+    android:layout_marginStart="80dp"
     android:layout_marginTop="5dp"
     android:gravity="center_horizontal"
     android:orientation="vertical">
@@ -62,7 +72,7 @@
     android:id="@+id/view_circles_price"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="140dp"
+    android:layout_marginStart="100dp"
     android:layout_marginTop="40dp"
     android:layout_toEndOf="@id/view_circles_container"
     android:textColor="#fff"
