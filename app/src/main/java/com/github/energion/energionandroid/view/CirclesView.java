@@ -144,7 +144,6 @@ public class CirclesView extends FrameLayout {
     Calendar dayDate = Calendar.getInstance();
     dayDate.setTime(day.getDate());
     dayDate.set(Calendar.HOUR_OF_DAY, startHour + 6);
-    calendar.add(Calendar.HOUR_OF_DAY, 2);
 
     return dayDate.after(calendar);
   }
