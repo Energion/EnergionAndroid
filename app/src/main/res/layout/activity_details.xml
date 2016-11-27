@@ -1,0 +1,97 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.github.energion.energionandroid.details.DetailsActivity">
+
+  <LinearLayout
+    android:id="@+id/detail_expensive"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="190dp"
+    android:layout_marginTop="235dp"
+    android:background="@drawable/small_detail_circle"
+    android:clickable="true"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/detail_expensive_price"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:textColor="#fff"
+      android:textSize="26sp"
+      tools:text="30.23$/\nMWh"/>
+
+    <TextView
+      android:id="@+id/detail_expensive_time"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      android:gravity="center"
+      android:textColor="#fff"
+      android:textSize="16sp"
+      tools:text="27.11.2016"/>
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/detail_medium"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="70dp"
+    android:layout_marginTop="220dp"
+    android:background="@drawable/medium_detail_circle"
+    android:clickable="true"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/detail_medium_price"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:textSize="26sp"
+      tools:text="31.23$/\nMWh"/>
+
+    <TextView
+      android:id="@+id/detail_medium_time"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      android:gravity="center"
+      android:textSize="16sp"
+      tools:text="27.11.2016"/>
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/detail_cheapest"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="140dp"
+    android:layout_marginTop="110dp"
+    android:background="@drawable/big_detail_circle"
+    android:clickable="true"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/detail_cheapest_price"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:textColor="#fff"
+      android:textSize="26sp"
+      tools:text="30.23$/\nMWh"/>
+
+    <TextView
+      android:id="@+id/detail_cheapest_time"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      android:gravity="center"
+      android:textColor="#fff"
+      android:textSize="16sp"
+      tools:text="27.11.2016"/>
+  </LinearLayout>
+</RelativeLayout>

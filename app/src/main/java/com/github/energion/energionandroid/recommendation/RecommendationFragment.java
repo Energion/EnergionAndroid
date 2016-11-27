@@ -65,25 +65,17 @@ public class RecommendationFragment extends Fragment implements DataObserver {
 
         String date = calendar.get(Calendar.DAY_OF_MONTH) + "." + calendar.get(Calendar.MONTH);
 
-        rootContainer.addView(new CirclesView(getActivity(), "00:00", String.valueOf(bestNight.get(i)) + "€", false, date));
-        rootContainer.addView(new CirclesView(getActivity(), "06:00", String.valueOf(bestMorning.get(i)) + "€", false, ""));
-        rootContainer.addView(new CirclesView(getActivity(), "12:00", String.valueOf(bestDay.get(i)) + "€", false, ""));
+        rootContainer.addView(new CirclesView(getActivity(), "00:00", String.valueOf(bestNight.get(i)) + "€", false, date).setDay(dayList.get(i)).setStartHour(0));
+        rootContainer.addView(new CirclesView(getActivity(), "06:00", String.valueOf(bestMorning.get(i)) + "€", false, "").setDay(dayList.get(i)).setStartHour(6));
+        rootContainer.addView(new CirclesView(getActivity(), "12:00", String.valueOf(bestDay.get(i)) + "€", false, "").setDay(dayList.get(i)).setStartHour(12));
 
         if (i == bestNight.size() - 1) {
-          rootContainer.addView(new CirclesView(getActivity(), "18:00", String.valueOf(bestEvening.get(i)) + "€", true, ""));
+          rootContainer.addView(new CirclesView(getActivity(), "18:00", String.valueOf(bestEvening.get(i)) + "€", true, "").setDay(dayList.get(i)).setStartHour(18));
         } else {
-          rootContainer.addView(new CirclesView(getActivity(), "18:00", String.valueOf(bestEvening.get(i)) + "€", false, ""));
+          rootContainer.addView(new CirclesView(getActivity(), "18:00", String.valueOf(bestEvening.get(i)) + "€", false, "").setDay(dayList.get(i)).setStartHour(18));
         }
       }
     }
-
-    /*for (Day day : dayList) {
-      Log.d("apiResponse", "date: " + day.getDate());
-
-      for (Hour hour : day.getHours()) {
-        Log.d("apiResponse", "hour: " + hour.getHour() + " and price is " + hour.getPrice());
-      }
-    }*/
   }
 
   private void setObservable(DataObservable observable) {
