@@ -33,8 +33,10 @@ public class CirclesView extends FrameLayout {
     TextView dateView = (TextView) findViewById(R.id.view_circles_date);
     ImageView lastCircleView = (ImageView) findViewById(R.id.view_circles_last_circle);
 
+    String priceStr = "min. " + price;
+
     timeView.setText(time);
-    priceView.setText(price);
+    priceView.setText(priceStr);
     dateView.setText(date);
 
     lastCircleView.setVisibility(lastItem ? VISIBLE : GONE);

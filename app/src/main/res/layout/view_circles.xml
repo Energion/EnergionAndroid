@@ -83,5 +83,5 @@
     android:paddingRight="5dp"
     android:background="#66BB6A"
     android:textStyle="bold"
-    tools:text="23.33$"/>
+    tools:text="min. 23.33$"/>
 </RelativeLayout>
