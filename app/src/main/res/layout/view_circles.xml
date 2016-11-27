@@ -3,7 +3,7 @@
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
+  android:layout_width="wrap_content"
   android:layout_height="wrap_content"
   android:orientation="vertical">
 
@@ -11,7 +11,7 @@
     android:id="@+id/view_circles_date"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="10dp"
+    android:layout_marginStart="40dp"
     android:layout_marginTop="4dp"
     android:textSize="22sp"
     android:textStyle="bold"
@@ -21,7 +21,7 @@
     android:id="@+id/view_circles_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="80dp"
+    android:layout_marginStart="110dp"
     android:layout_marginTop="5dp"
     android:gravity="center_horizontal"
     android:orientation="vertical">
@@ -72,16 +72,16 @@
     android:id="@+id/view_circles_price"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="100dp"
+    android:layout_marginStart="120dp"
     android:layout_marginTop="40dp"
     android:layout_toEndOf="@id/view_circles_container"
-    android:textColor="#fff"
+    android:textColor="@color/colorGoodPrice"
     android:textSize="24sp"
     android:paddingTop="3dp"
     android:paddingBottom="3dp"
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
-    android:background="#66BB6A"
+    android:background="@drawable/button_background"
     android:textStyle="bold"
-    tools:text="min. 23.33$"/>
+    tools:text="23.33$"/>
 </RelativeLayout>
