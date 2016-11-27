@@ -224,6 +224,7 @@ public class ManualFragment extends Fragment implements DataObserver {
         xaxis.setValueFormatter(xAxisFormatter);
         xaxis.setDrawGridLines(false);
         xaxis.setDrawAxisLine(false);
+        xaxis.setTextSize(10f);
         xaxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         LimitLine limitLine = new LimitLine(23.5f);
         limitLine.setLineColor(Color.parseColor("#939393"));
