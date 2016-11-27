@@ -49,6 +49,7 @@ public class CirclesView extends FrameLayout {
     TextView timeView = (TextView) findViewById(R.id.view_circles_time);
     TextView priceView = (TextView) findViewById(R.id.view_circles_price);
     TextView dateView = (TextView) findViewById(R.id.view_circles_date);
+    TextView endTime = (TextView) findViewById(R.id.view_circles_end_time);
     ImageView lastCircleView = (ImageView) findViewById(R.id.view_circles_last_circle);
 
     timeView.setText(time);
@@ -56,6 +57,7 @@ public class CirclesView extends FrameLayout {
     dateView.setText(date);
 
     lastCircleView.setVisibility(lastItem ? VISIBLE : GONE);
+    endTime.setVisibility(lastItem ? VISIBLE : GONE);
 
     priceView.setOnClickListener(new OnClickListener() {
       @Override

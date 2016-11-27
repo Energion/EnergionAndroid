@@ -69,6 +69,17 @@
     tools:text="18:00"/>
 
   <TextView
+    android:id="@+id/view_circles_end_time"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="85dp"
+    android:layout_toEndOf="@id/view_circles_container"
+    android:textSize="22sp"
+    android:textStyle="bold"
+    android:text="00:00"/>
+
+  <TextView
     android:id="@+id/view_circles_price"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
