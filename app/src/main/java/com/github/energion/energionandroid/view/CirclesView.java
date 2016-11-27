@@ -1,10 +1,12 @@
-package com.github.energion.energionandroid;
+package com.github.energion.energionandroid.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.github.energion.energionandroid.R;
 
 public class CirclesView extends FrameLayout {
   public CirclesView(Context context, String time, String price, boolean lastItem, String date) {

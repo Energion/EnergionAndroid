@@ -1,4 +1,4 @@
-package com.github.energion.energionandroid;
+package com.github.energion.energionandroid.settings;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

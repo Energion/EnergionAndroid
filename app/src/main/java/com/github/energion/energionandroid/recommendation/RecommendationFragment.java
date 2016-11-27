@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import com.github.energion.energionandroid.CirclesView;
+import com.github.energion.energionandroid.view.CirclesView;
 import com.github.energion.energionandroid.DataObservable;
 import com.github.energion.energionandroid.DataObserver;
 import com.github.energion.energionandroid.R;
