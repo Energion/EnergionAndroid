@@ -38,6 +38,13 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="5dp"
       android:src="@drawable/small_circle"/>
+
+    <ImageView
+      android:id="@+id/view_circles_last_circle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      android:src="@drawable/big_circle"/>
   </LinearLayout>
 
   <TextView

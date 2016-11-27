@@ -59,10 +59,13 @@ public class RecommendationFragment extends Fragment implements DataObserver {
         && bestEvening.size() == dayList.size()) {
 
       for (int i = 0; i < bestNight.size(); i++) {
-        rootContainer.addView(new CirclesView(getActivity(), "00:00", String.valueOf(bestNight.get(i)) + "€"));
-        rootContainer.addView(new CirclesView(getActivity(), "06:00", String.valueOf(bestMorning.get(i)) + "€"));
-        rootContainer.addView(new CirclesView(getActivity(), "12:00", String.valueOf(bestDay.get(i)) + "€"));
-        rootContainer.addView(new CirclesView(getActivity(), "18:00", String.valueOf(bestEvening.get(i)) + "€"));
+        rootContainer.addView(new CirclesView(getActivity(), "00:00", String.valueOf(bestNight.get(i)) + "€", false));
+        rootContainer.addView(new CirclesView(getActivity(), "06:00", String.valueOf(bestMorning.get(i)) + "€", false));
+        rootContainer.addView(new CirclesView(getActivity(), "12:00", String.valueOf(bestDay.get(i)) + "€", false));
+
+        if (i == bestNight.size() - 1) {
+          rootContainer.addView(new CirclesView(getActivity(), "18:00", String.valueOf(bestEvening.get(i)) + "€", true));
+        }
       }
     }
 
