@@ -18,7 +18,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|top"
                 android:textSize="42dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginLeft="20dp"
                 android:text="@string/select_price_label"
                 android:textColor="#9E9E9E"
@@ -28,17 +28,20 @@
                 android:id="@+id/selected_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="left|top"
                 android:layout_marginTop="10dp"
-                android:textSize="32dp"/>
+                android:layout_marginLeft="20dp"
+                android:textSize="32dp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/selected_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="left|top"
                 android:layout_marginTop="10dp"
-                android:textColor="#AAAAAA"
+                android:layout_marginLeft="20dp"
+                android:textColor="#CCCCCC"
                 android:textSize="22dp"/>
 
         </LinearLayout>
@@ -47,7 +50,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-
             android:layout_gravity="bottom">
 
             <com.github.mikephil.charting.charts.BarChart
